@@ -1,24 +1,59 @@
 ;Header and description
-(define (domain domain_name)
+(define (domain magabot-strips)
 
     ; Requeriments
-    (:requirements :strips :fluents :durative-actions :timed-initial-literals :typing :conditional-effects :negative-preconditions :duration-inequalities :equality)
+    (:requirements :strips :typing :negative-preconditions)
 
-    ; Predicats
-    (:predicates ;todo: define predicates here
-        ()
+    ; Tipus
+    (:types
+        robot
+        paquet
+        casella
     )
 
-    ; FuncionsW
+    ; Predicats
+    (:predicates
+        ; Casella
+        (lliure ?c - casella)
+        (adj ?c1 ?c2 - casella)
+        (estanteria ?c - casella)
+        (dispensador ?c - casella)
+
+        ; Robot
+        (robot-a ?r - robot ?c - casella)
+
+        ; Pila
+        (sobre-paquet ?p1 ?p2 - paquet)
+        (sobre-estanteria ?p - paquet ?c - casella)
+        (sobre-robot ?p - paquet ?r - robot)
+
+    )
+
+    ; Funcions
     (:functions
         
     )
 
     ; Accions
     (:action moure-robot
-        :parameters ()
-        :precondition (and )
-        :effect (and )
+        :parameters (
+            ?r - robot
+            ?origen - casella
+            ?desti - casella
+        )
+        :precondition (and 
+            (robot-a ?r ?origen)
+            (adj ?origen ?desti)
+            (lliure ?desti)
+            (not (estanteria ?desti))
+            (not (dispensador ?desti))
+        )
+        :effect (and 
+            (robot-a ?r ?desti)
+            (lliure ?origen)
+            (not (robot-a ?r ?origen))
+            (not (lliure ?desti))
+        )
     )
     (:action agafar-paquet
         :parameters ()
