@@ -1,25 +1,16 @@
-(define (problem simplea) 
+(define (problem simpleb)
     (:domain magabot-strips)
     (:objects
-        ; Robots
         r1 r2 - robot
-
-        ; Paquets
         pkg1 pkg2 pkg3 - paquet
-
-        ; Caselles lliures
         c11 c12 c13 c14 c15 - casella
         c21 - casella
         c31 c33 c35 - casella
         c41 c43 c45 - casella
         c51 c52 c53 c54 c55 c56 - casella
         c61 c63 c66 - casella
-
-        ; Estanteries
-        c22 c25 - casella
-
-        ; Dispensador
-        c44 - casella
+        c22 c25 - casella   ; estanteries
+        c44 - casella        ; dispensador
     )
     (:init
         (dispensador c44)
@@ -42,35 +33,27 @@
         (lliure c51) (lliure c52) (lliure c53) (lliure c54) (lliure c56)
         (lliure c63) (lliure c66)
 
-        ; Adjecencies
-        ;     1     2     3     4     5     6
-        ; 1  [ ]   [ ]   [ ]   [ ]   [ ]   [#]
-        ; 2  [ ]   [E1]  [#]   [#]   [E2]  [#]
-        ; 3  [ ]   [#]   [ ]   [#]   [ ]   [#]
-        ; 4  [ ]   [#]   [ ]   [D]   [ ]   [#]  
-        ; 5  [ ]   [ ]   [ ]   [ ]   [R2]  [ ]
-        ; 6  [R1]  [#]   [ ]   [#]   [#]   [ ]
-        
+        ; Adjacències (idèntiques a simplea)
         (adj c11 c12) (adj c12 c11)
         (adj c12 c22) (adj c22 c12)
         (adj c12 c13) (adj c13 c12)
         (adj c13 c14) (adj c14 c13)
         (adj c14 c15) (adj c15 c14)
 
-        (adj c11 c21) (adj c21 c11) ; f1 -> f2
+        (adj c11 c21) (adj c21 c11)
         (adj c21 c22) (adj c22 c21)
         (adj c15 c25) (adj c25 c15)
 
-        (adj c21 c31) (adj c31 c21) ; f2 -> f3
+        (adj c21 c31) (adj c31 c21)
         (adj c35 c25) (adj c25 c35)
-        
-        (adj c41 c31) (adj c31 c41) ; f3 -> f4
+
+        (adj c41 c31) (adj c31 c41)
         (adj c43 c33) (adj c33 c43)
         (adj c44 c43) (adj c43 c44)
         (adj c44 c45) (adj c45 c44)
         (adj c45 c35) (adj c35 c45)
-        
-        (adj c51 c41) (adj c41 c51) ; f4 -> f5
+
+        (adj c51 c41) (adj c41 c51)
         (adj c51 c52) (adj c52 c51)
         (adj c52 c53) (adj c53 c52)
         (adj c53 c54) (adj c54 c53)
@@ -79,15 +62,19 @@
         (adj c55 c56) (adj c56 c55)
         (adj c55 c45) (adj c45 c55)
 
-        (adj c61 c51) (adj c51 c61) ; f5 -> f6
+        (adj c61 c51) (adj c51 c61)
         (adj c63 c53) (adj c53 c63)
         (adj c66 c56) (adj c56 c66)
+
+        (primer-dispensar pkg2)      ; pkg2 ha de ser el primer
+        (seg-dispensar pkg2 pkg1)    ; pkg1 va just després de pkg2
+        (seg-dispensar pkg1 pkg3)    ; pkg3 va just després de pkg1
+        (cap-dispensat)              ; encara no s'ha dispensat res
     )
 
     (:goal (and
         (dispensat pkg1)
         (dispensat pkg2)
         (dispensat pkg3)
-        )
-    )
+    ))
 )
